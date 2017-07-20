@@ -1,0 +1,46 @@
+<section class="col-md-2" style="padding: 0px">
+  <div class="input-group">
+    <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+    <input type="text" #busca (input)="buscarProduto(busca.value)" class="form-control" placeholder="digite a sua busca" aria-describedby="basic-addon1">
+  </div>
+  <div *ngFor="let prod of produtos">
+    <app-item-produto [produto]="prod" *ngIf="prod.visivel && prod.noFiltro" (eventAdicionar)="addProdutoNaLista($event.produto)"></app-item-produto>
+  </div>
+</section>
+
+
+
+
+
+<section class="col-md-10">
+  <app-lista class="col-md-12" [lista]="listaAtual" (eventRemover)="removeuItemDaLista($event.produto)"></app-lista>
+</section>
+
+
+
+
+
+<section class="col-md-12">
+  <button class=" col-md-2 btn btn-success" type="button"   data-toggle="modal" data-target="#myModal">Novo Produto</button>
+  <!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+
+
