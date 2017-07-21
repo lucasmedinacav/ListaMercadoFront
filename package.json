@@ -4,13 +4,10 @@
   "license": "MIT",
   "angular-cli": {},
 "scripts": {
-    "start": "http-server",
-    "lint": "tslint \"src/**/*.ts\"",
-    "test": "ng test",
-    "pree2e": "webdriver-manager update",
-    "e2e": "protractor",
-    "preinstall": "npm install -g http-server",
-    "postinstall": "ng build && mv dist/* ."
+    "ng":"ng",
+    "start": "node server.js",
+    "build": "ng build",
+    "postinstall": "ng build --aot -prod"
   }, "engines": {
     "node": "6.6.0",
     "npm": "3.10.3"
@@ -50,7 +47,7 @@
     "protractor": "~4.0.13",
     "ts-node": "1.2.1",
     "tslint": "^4.3.0",
-    "typescript": "~2.0.3"
-  },"devDependencies": {
+    "typescript": "~2.0.3",
+    "serve-favicon": "~2.3.0"
   }
 }
