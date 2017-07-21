@@ -72,8 +72,8 @@ export class AppComponent implements OnInit {
   fileEvent(fileInput: any) {
     var AWSService = window.AWS;
     var file = fileInput.target.files[0];
-    AWSService.config.accessKeyId = 'AKIAJIX2UJTDV4QNOTUA';
-    AWSService.config.secretAccessKey = '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';
+    AWSService.config.accessKeyId = 'AKIAINVXLPAADJCHHDBQ';
+    AWSService.config.secretAccessKey = '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';
     AWSService.config.region = 'sa-east-1';
     var bucket = new AWSService.S3({ params: { Bucket: 'lucasmedinaa' } });
     var params = { Key: file.name, Body: file };

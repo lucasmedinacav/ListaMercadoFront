@@ -15,36 +15,36 @@
 </div>
         <div *ngFor="let produto of listaSelec.produtos" class="thumbnail col-xs-2" style="margin:14px" >
             <div [ngClass]="getClassSeJaPegou(produto.jaPegou)">
-                <span style="text-align: center;margin-left:20px;font-size:15px;font-weight: bold" class="caption">
+                <span style="text-align: center;font-size:18px;font-weight: bold; margin-bottom:5px" class="col-xs-12">
                     {{ produto.nome }}
                 </span>
-                <span (click)="removerProdutoDaLista(produto)" class="glyphicon glyphicon-remove" 
-                style="margin:5px; float: right; cursor:pointer;" title="Remover produto da sua lista"></span>
+                <span (click)="removerProdutoDaLista(produto)" class="glyphicon glyphicon-remove"  *ngIf="!produto.jaPegou"
+                style="margin:5px; margin-top:-20px;     float: right; cursor:pointer;" title="Remover produto da sua lista"></span>
             </div>
 
             <div [ngClass]="getClassSeJaPegou(produto.jaPegou)" style="text-align:center">
                 <img [src]="produto.imagem" style="width:152px; height:152px;" [alt]="produto.nome">
             </div>
-            <div [ngClass]="getClassSeJaPegou(produto.jaPegou)">
+            <div [ngClass]="getClassSeJaPegou(produto.jaPegou)" style="text-align:center">
                 Valor Unitario : {{ produto.valor | currency : 'BRL' : true }}
             </div>
-            <div  [ngClass]="getClassSeJaPegou(produto.jaPegou)">
+            <div  [ngClass]="getClassSeJaPegou(produto.jaPegou)" style="text-align:center">
                 Total : {{ produto.quantidade * produto.valor | currency : 'BRL' : true }}
             </div>
 
-                <div [ngClass]="getClassSeJaPegou(produto.jaPegou)" style="text-align:left;display:inline-block">
-                    <a (click)="listaSelec.diminuirQuantidade(produto)">
-                      <span class="glyphicon glyphicon-minus" style="margin-left:15px;font-size: 18px;color: black;cursor:pointer;"></span>
+                <div [ngClass]="getClassSeJaPegou(produto.jaPegou)" style="text-align:left;display:block;text-align: center;" *ngIf="!produto.jaPegou">
+                    <a (click)="listaSelec.diminuirQuantidade(produto)" >
+                      <span class="glyphicon glyphicon-minus" style="font-size: 18px;color: black;cursor:pointer;"></span>
                     </a>
-                    <input type="number" [(ngModel)]="produto.quantidade" readonly="true" style="width:30px;margin-right:15px;margin-left:15px" min="0" class="form-group" />
-                    <a (click)="listaSelec.aumentarQuantidade(produto)">
+                    <input type="number" [(ngModel)]="produto.quantidade" readonly="true" style="text-align: center;width:30px;margin-right:5px;margin-left:10px" min="0"/>
+                    <a (click)="listaSelec.aumentarQuantidade(produto)" >
                       <span class="glyphicon glyphicon-plus" style="font-size: 18px;margin:5px;color: black; cursor:pointer;"></span>
                     </a>
                 </div>
 
-          <div style="font-size:20px; color:black; text-align: right;display:inline-block; margin-top: 8px;">
-              <span *ngIf="!produto.jaPegou" class="glyphicon glyphicon-shopping-cart " style="cursor:pointer; margin-left:30px" title="Coloquei no carrinho" (click)="listaSelec.pegarProduto(produto)"></span>
-              <span *ngIf="produto.jaPegou" (click)="listaSelec.devolverProduto(produto)" class="glyphicon glyphicon-ban-circle" style="cursor:pointer; margin-left:30px" title="Adicionar na sua lista"></span>
+          <div style="font-size:30px; color:black; text-align: center;display:-block; margin-top: 5px;" >
+              <span *ngIf="!produto.jaPegou" class="glyphicon glyphicon-shopping-cart " style="cursor:pointer;" title="Coloquei no carrinho" (click)="listaSelec.pegarProduto(produto)"></span>
+              <span *ngIf="produto.jaPegou" (click)="listaSelec.devolverProduto(produto)" class="glyphicon glyphicon-ban-circle" style="cursor:pointer;" title="Ops, nao tenho certeza se vou pegar mesmo"></span>
           </div>
         </div>
 <section style="position: fixed; bottom: 0px; margin: 3px;background: #515151; color:white; margin-left: -44px; font-size:16px; width:100%;height:50px; padding: 15px;" class="col-xs-12; ">
