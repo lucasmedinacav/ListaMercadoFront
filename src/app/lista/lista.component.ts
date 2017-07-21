@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Produto } from '.././produtos/Produto';
+import { Produto } from '.././produtos/produto';
 import { ProdutoRequest } from '.././produtos/produto-request';
 import { Lista } from './lista';
 import { ProdutoListaService} from '../produtos/produto-lista.service'
