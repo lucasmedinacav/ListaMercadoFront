@@ -1,11 +1,18 @@
 import { Produto } from '.././produtos/produto';
 
 export class Lista {
-  produtos: Array<Produto> = new Array();
-  estimado: number = 0;
-  total: number = 0;
+
+  constructor(
+    public id: number,
+  public nome: String,
+  public produtos: Produto[],
+  public estimado: number,
+  public total: number
+  ) { }
+
 
   aumentarQuantidade(produto: Produto) {
+    console.log("oi");
     produto.quantidade++;
     this.getValorEstimado();
   }
@@ -19,9 +26,11 @@ export class Lista {
 
   getValorEstimado() {
     this.estimado = 0;
+    if(this.produtos){
     this.produtos.forEach(element => {
       this.estimado += (element.valor * element.quantidade);
     });
+    }
   }
 
   pegarProduto(produto: Produto) {
@@ -32,17 +41,4 @@ export class Lista {
     produto.jaPegou = false;
     this.total -= (produto.valor * produto.quantidade);
   }
-
-  removerProdutoDaLista(produto: Produto) {
-    this.produtos = this.produtos.filter(function(prod){
-      return produto.id != prod.id;
-    });
-    this.getValorEstimado();
-    if(produto.jaPegou){
-      this.total -= (produto.quantidade * produto.valor);
-    }
-  }
-
-
-
 }

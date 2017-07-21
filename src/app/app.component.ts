@@ -1,54 +1,120 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { Produto } from './produtos/produto';
 import { Lista } from './lista/lista';
+import { ProdutoListaService } from './produtos/produto-lista.service';
+import { element } from 'protractor';
+require('aws-sdk/dist/aws-sdk');
+declare var jQuery:any;
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  produtos: Array<Produto> = new Array();
+export class AppComponent implements OnInit {
+  produtos: Produto[] = [];
   listaAtual: Lista;
+  urlImgUpload: any;
+  titleModal: String;
+  msgResponse: String;
+  produtoCad: Produto;
+  idLista: number;
 
-  constructor() {
-    this.listaAtual = new Lista();
-    this.produtos.push(new Produto(1, 'Refrigerante', 'a', 30.00));
-    this.produtos.push(new Produto(2, 'Refrigerante 2', 'b', 33.00));
-    this.produtos.push(new Produto(3, 'Refrigerante 3', 'c', 32.00));
-    this.produtos.push(new Produto(4, 'Refrigerante 4', 'd', 30.00));
+  constructor(private produtoListaService: ProdutoListaService) {
+    this.listaAtual = new Lista(0, '', null , 0, 0);
+    this.consultaProdutosNaoCadastrados(this.idLista);
   }
 
-  addProdutoNaLista(produto) {
-    let existe: boolean = false;
-    this.listaAtual.produtos.forEach(function (elemento) {
-      if (produto.id == elemento.id) {
-        existe = true;
-      }
-    });
-    if (!existe) {
-      this.listaAtual.produtos.push(produto);
-      this.listaAtual.getValorEstimado();
-    }
+  consultaProdutosNaoCadastrados(idLista:number){
+    this.idLista = idLista;
+    this.produtoListaService.getProdutosNaoCadastrados(idLista)
+      .subscribe(produtos => {
+        this.produtos = produtos;
+        this.produtos.forEach(element => {
+          element.noFiltro = true;
+        })
+      })
   }
 
-  removeuItemDaLista(produto: Produto) {
-    this.produtos.forEach(element => {
-      if (element.id == produto.id) {
-        element.visivel = true;
-      }
-    });
+  getFormGroupClass(isValid: boolean, isPristine: boolean): {} {
+    return {
+      'form-group': true,
+      'has-danger': !isValid && !isPristine,
+      'has-success': isValid && !isPristine
+    };
   }
+
+  getFormControlClass(isValid: boolean, isPristine: boolean): {} {
+    return {
+      'form-control': true,
+      'form-control-danger': !isValid && !isPristine,
+      'form-control-success': isValid && !isPristine
+    };
+  }
+
+  ngOnInit() {
+    this.produtoCad = new Produto(0, 0, false, 0, '', 0, '', false);
+  }
+
+
 
   buscarProduto(buscaDigitada) {
     console.log(buscaDigitada);
     this.produtos.forEach(function (element) {
       if (!element.nome.toLowerCase().includes(buscaDigitada.toLowerCase())) {
         element.noFiltro = false;
-      }else{
+      } else {
         element.noFiltro = true;
       }
     });
   }
 
+  fileEvent(fileInput: any) {
+    var AWSService = window.AWS;
+    var file = fileInput.target.files[0];
+    AWSService.config.accessKeyId = 'AKIAJIX2UJTDV4QNOTUA';
+    AWSService.config.secretAccessKey = '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';
+    AWSService.config.region = 'sa-east-1';
+    var bucket = new AWSService.S3({ params: { Bucket: 'lucasmedinaa' } });
+    var params = { Key: file.name, Body: file };
+    this.urlImgUpload = bucket.upload(params, function (err, data) {
+      if (err) {
+        console.log(err);
+      } else {
+        this.Location = data.Location;
+      }
+    });
+  }
+
+  openModalProduto(title: String, produto: Produto) {
+    this.titleModal = title;
+    this.urlImgUpload = null;
+    if(!produto){
+       this.produtoCad = new Produto(0, 0, false, null, '', 0, '', false);
+    }else{
+      this.urlImgUpload = new Object();
+      this.produtoCad = produto;
+      this.urlImgUpload.Location = produto.imagem;
+    }
+  }
+
+  onSubmit(){
+    jQuery("#myModal").modal("hide"); 
+    //this.produtoCad.id = null;
+    this.produtoCad.imagem = this.urlImgUpload.Location;
+    this.produtoListaService.cadastraProduto(this.produtoCad).subscribe(
+      data =>  {this.msgResponse = "Cadastro Efetuado com Sucesso", this.consultaProdutosNaoCadastrados(this.idLista);},
+      err =>  {console.log(err); this.msgResponse = "Ocorreu um erro"; jQuery("#modalResponse").modal("show")},
+      () =>  jQuery("#modalResponse").modal("show")
+    );
+  }
+
+  excluiProduto(id:Number){
+    jQuery("#modalExcluirProduto").modal("hide"); 
+    this.produtoListaService.excluiProduto(id).subscribe(
+      data =>  {this.msgResponse = "Produto Removido com Sucesso", this.consultaProdutosNaoCadastrados(this.idLista);},
+      err =>  {console.log(err); this.msgResponse = "Ocorreu um erro"; jQuery("#modalResponse").modal("show")},
+      () =>  jQuery("#modalResponse").modal("show")
+    );
+  }
 }

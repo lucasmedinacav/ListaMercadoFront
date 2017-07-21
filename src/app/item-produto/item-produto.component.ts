@@ -10,6 +10,8 @@ export class ItemProdutoComponent implements OnInit {
 
   @Input() produto: Produto;
   @Output() eventAdicionar = new EventEmitter();
+  @Output() eventAlterar = new EventEmitter();
+  @Output() eventExcluir = new EventEmitter();
   constructor() {
   }
 
@@ -17,8 +19,15 @@ export class ItemProdutoComponent implements OnInit {
   }
 
   enviarParaLista(){
-    this.produto.visivel = false;
     this.eventAdicionar.emit({produto : this.produto});
   }
 
+  alterarProduto(){
+    this.eventAlterar.emit({produto : this.produto});
+  }
+
+  excluirProduto(){
+    this.eventExcluir.emit({produto : this.produto});
+  }
 }
+  

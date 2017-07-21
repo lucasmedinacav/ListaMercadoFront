@@ -37,6 +37,11 @@
       "config": "./protractor.conf.js"
     }
   },
+  "module":{
+    "noParse":[
+      "/aws-sdk/"
+    ]
+  },
   "lint": [
     {
       "files": "src/**/*.ts",
