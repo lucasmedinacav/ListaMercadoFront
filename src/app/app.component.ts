@@ -72,8 +72,8 @@ export class AppComponent implements OnInit {
   fileEvent(fileInput: any) {
     var AWSService = window.AWS;
     var file = fileInput.target.files[0];
-    AWSService.config.accessKeyId = 'AKIAIEU35ZTHS6HD3BCA';
-    AWSService.config.secretAccessKey = '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';
+    AWSService.config.accessKeyId = 'AKIAJQGVWRZ5IT5M3T7A';
+    AWSService.config.secretAccessKey = '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';
     AWSService.config.region = 'sa-east-1';
     var bucket = new AWSService.S3({ params: { Bucket: 'lucasmedinaa' } });
     var params = { Key: file.name, Body: file };
@@ -81,7 +81,7 @@ export class AppComponent implements OnInit {
       if (err) {
         console.log(err);
       } else {
-        console.log("AKIAIEU35ZTHS6HD3BCA");
+        console.log("AKIAJQGVWRZ5IT5M3T7A");
         this.Location = data.Location;
       }
     });
