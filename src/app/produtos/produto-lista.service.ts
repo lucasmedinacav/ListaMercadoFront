@@ -12,7 +12,7 @@ import 'rxjs/add/operator/map';
 export class ProdutoListaService {
 
     private headers: Headers = new Headers({ 'Content-Type': 'application/json' });
-    private URL_HOST:String = "http://localhost:8080";
+    private URL_HOST:String = "https://lista-mercado-rest.herokuapp.com";
 
     constructor(private http: Http) { }
 
